@@ -1,15 +1,16 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ZapIcon, LinkIcon, DollarSignIcon } from "lucide-react"
+import { MountainIcon, ZapIcon, LinkIcon, DollarSignIcon } from "lucide-react"
 
 export default function Component() {
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
       <header className="px-4 lg:px-6 h-14 flex items-center">
         <Link href="#" className="flex items-center justify-center font-bold" prefetch={false}>
-          {/* Ejemplo de cómo usar tu logo */}
-          <img src="/assets/logo-placeholder.png" alt="Brocket.ai Logo" className="h-7 w-7 mr-2" />
+          <Image src="favicon-32x32.png" alt="Brocket.ai Logo" width={32} height={32} className="h-5 w-5 mr-2" />
+          {/* <MountainIcon className="h-6 w-6 mr-2" /> */}
           <span>Brocket.ai</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
@@ -52,14 +53,13 @@ export default function Component() {
                   </Link>
                 </div>
               </div>
-              {/* Ejemplo de cómo usar tu imagen principal */}
-              <img
-                src="/assets/imagen-principal-placeholder.png"
-                width="550"
-                height="550"
-                alt="Representación visual del servicio de Brocket.ai"
+              {/* <Image
+                src="deer.png"
+                width={550}
+                height={550}
+                alt="logo Brocket.ai"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-              />
+              /> */}
             </div>
           </div>
         </section>
