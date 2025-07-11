@@ -1,30 +1,24 @@
-# Crear Página de Emprendimiento
+# Brocket.ai
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+Website de  **Brocket.ai**, una plataforma que permite a equipos operacionales consultar en lenguaje natural los datos de su ERP, obteniendo respuestas instantáneas y reduciendo los costos asociados a la consultoría.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/felipes-projects-3338ff01/v0-crear-pagina-de-emprendimiento)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/cveuHSxBxW2)
+## Características
 
-## Overview
+- **Facilidad de Uso:** Interfaz intuitiva para que los usuarios puedan realizar consultas sin necesidad de manejo complejo del sistema.
+- **Practicidad Inmediata:** Conecta directamente con tus sistemas existentes para proveer respuestas en tiempo real.
+- **Reducción de Costos:** Minimiza la dependencia de consultores al permitir que el equipo extraiga la información necesaria de forma autónoma.
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
 
-## Deployment
+## Uso
 
-Your project is live at:
+- **Desarrollo:** Para iniciar el entorno de desarrollo, ejecuta:
+    ```sh
+    npm run dev
+    ```
+    La aplicación se ejecutará en [http://localhost:3000](http://localhost:3000).
 
-**[https://vercel.com/felipes-projects-3338ff01/v0-crear-pagina-de-emprendimiento](https://vercel.com/felipes-projects-3338ff01/v0-crear-pagina-de-emprendimiento)**
-
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.dev/chat/projects/cveuHSxBxW2](https://v0.dev/chat/projects/cveuHSxBxW2)**
-
-## How It Works
-
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+- **Producción:** Para compilar la aplicación para producción:
+    ```sh
+    npm run build
+    npm start
+    ```
