@@ -5,12 +5,51 @@ import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ZapIcon, LinkIcon, DollarSignIcon } from "lucide-react"
+import { useState } from "react"
 
 export default function Component() {
+  const [email, setEmail] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [message, setMessage] = useState("")
+  const [messageType, setMessageType] = useState<"success" | "error" | "">("")
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setMessage("")
+    setMessageType("")
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setMessage("¡Gracias! Nos pondremos en contacto contigo pronto.")
+        setMessageType("success")
+        setEmail("")
+      } else {
+        setMessage(data.error || "Hubo un error al enviar tu solicitud. Inténtalo de nuevo.")
+        setMessageType("error")
+      }
+    } catch (error) {
+      setMessage("Hubo un error al enviar tu solicitud. Inténtalo de nuevo.")
+      setMessageType("error")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -157,12 +196,31 @@ export default function Component() {
                 </p>
               </div>
               <div className="mx-auto w-full max-w-sm space-y-2">
-                <form className="flex gap-2">
-                  <Input type="email" placeholder="Ingresa tu email" className="max-w-lg flex-1" />
-                  <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                    Contactar
+                <form onSubmit={handleSubmit} className="flex gap-2">
+                  <Input 
+                    type="email" 
+                    placeholder="Ingresa tu email" 
+                    className="max-w-lg flex-1" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    disabled={isSubmitting}
+                  />
+                  <Button 
+                    type="submit" 
+                    className="bg-blue-600 hover:bg-blue-700"
+                    disabled={isSubmitting || !email.trim()}
+                  >
+                    {isSubmitting ? "Enviando..." : "Contactar"}
                   </Button>
                 </form>
+                {message && (
+                  <p className={`text-sm ${
+                    messageType === "success" ? "text-green-600" : "text-red-600"
+                  }`}>
+                    {message}
+                  </p>
+                )}
                 <p className="text-xs text-slate-500">Sin spam. Solo una conversación para entender tus necesidades.</p>
               </div>
             </div>
