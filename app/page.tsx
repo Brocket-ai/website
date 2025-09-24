@@ -5,12 +5,101 @@ import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ZapIcon, LinkIcon, DollarSignIcon } from "lucide-react"
+import { useState, useEffect } from "react"
 
 export default function Component() {
+  const [email, setEmail] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [message, setMessage] = useState("")
+  const [messageType, setMessageType] = useState<"success" | "error" | "">("")
+  
+  // Helper function to format text with bold numbers and percentages
+  const formatAnswerWithBoldNumbers = (text: string) => {
+    return text
+      .replace(/(\$[\d,]+)/g, '<strong>$1</strong>') // Bold dollar amounts
+      .replace(/(\d+%)/g, '<strong>$1</strong>') // Bold percentages
+      .replace(/(Q\d+):/g, '<strong>$1</strong>:') // Bold quarters
+      .replace(/(\d{4})/g, '<strong>$1</strong>') // Bold years
+  }
+
+  // Carousel data
+  const carouselExamples = [
+    {
+      question: "¿Cuál fue la venta total del mes pasado?",
+      answer: "Las ventas totales de noviembre fueron <strong>$847,320</strong> con un crecimiento del <strong>12%</strong> respecto al mes anterior.",
+      responseTime: "0.8s"
+    },
+    {
+      question: "Mostrame los 5 clientes que más compraron en el último trimestre.",
+      answer: "Los 5 clientes con mayor volumen de compras en el último trimestre fueron:\nDistribuidora Sol S.A. – <strong>$3,240,000</strong>\nAlimentos Río S.R.L. – <strong>$2,980,000</strong>\nSupermercados Delta – <strong>$2,450,000</strong>\nImportadora López – <strong>$1,870,000</strong>\nFarmacia Central – <strong>$1,640,000</strong>",
+      responseTime: "1.2s"
+    },
+    {
+      question: "¿Cómo fue la evolución trimestral de las ventas en 2024?",
+      answer: "Las ventas de <strong>2024</strong> evolucionaron así:\n<strong>Q1</strong>: <strong>$540,000</strong>\n<strong>Q2</strong>: <strong>$612,000</strong>\n<strong>Q3</strong>: <strong>$585,000</strong>\n<strong>Q4</strong>: <strong>$640,000</strong>\nEl crecimiento acumulado del año fue <strong>+14%</strong>.",
+      responseTime: "0.9s"
+    }
+  ]
+  
+  const [currentExample, setCurrentExample] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+
+  // Function to handle smooth transitions
+  const transitionToExample = (nextIndex: number) => {
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentExample(nextIndex)
+      setIsTransitioning(false)
+    }, 500) // Half of the transition duration (now 1000ms total)
+  }
+
+  // Auto-cycle carousel every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextIndex = (currentExample + 1) % carouselExamples.length
+      transitionToExample(nextIndex)
+    }, 10000)
+    
+    return () => clearInterval(interval)
+  }, [currentExample, carouselExamples.length])
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setMessage("")
+    setMessageType("")
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setMessage("¡Gracias! Nos pondremos en contacto contigo pronto.")
+        setMessageType("success")
+        setEmail("")
+      } else {
+        setMessage(data.error || "Hubo un error al enviar tu solicitud. Inténtalo de nuevo.")
+        setMessageType("error")
+      }
+    } catch (error) {
+      setMessage("Hubo un error al enviar tu solicitud. Inténtalo de nuevo.")
+      setMessageType("error")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -63,35 +152,62 @@ export default function Component() {
                     onClick={() => scrollToSection("features")}
                     className="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-8 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                   >
-                    Saber Más
+                    Como funciona
                   </button>
                 </div>
               </div>
               <div className="flex items-center justify-center">
-                <div className="relative w-full max-w-md aspect-square">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl opacity-20 blur-3xl"></div>
-                  <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20">
-                    <div className="space-y-4">
-                      <div className="flex items-center space-x-3">
+                <div className="relative w-full max-w-md transition-all duration-1000 ease-in-out">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl opacity-20 blur-3xl transition-all duration-1000 ease-in-out"></div>
+                  <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 transition-all duration-1000 ease-in-out">
+                    <div className="flex flex-col h-[350px]">
+                      {/* Header - Sistema conectado */}
+                      <div className="flex items-center space-x-3 mb-4">
                         <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                         <div className="text-sm text-slate-600">Sistema conectado</div>
                       </div>
-                      <div className="space-y-3">
-                        <div className="bg-blue-50 rounded-lg p-3">
+                      
+                      {/* Content area - flexible height */}
+                      <div className={`flex-1 flex flex-col space-y-3 transition-all duration-1000 ease-in-out ${
+                        isTransitioning ? 'opacity-0 transform translate-y-4 scale-98' : 'opacity-100 transform translate-y-0 scale-100'
+                      }`}>
+                        <div className="bg-blue-50 rounded-lg p-3 transition-all duration-1000 ease-in-out">
                           <div className="text-sm text-blue-800 font-medium">
-                            "¿Cuál fue la venta total del mes pasado?"
+                            "{carouselExamples[currentExample].question}"
                           </div>
                         </div>
-                        <div className="bg-slate-50 rounded-lg p-3">
-                          <div className="text-sm text-slate-700">
-                            Las ventas totales de noviembre fueron $847,320 con un crecimiento del 12% respecto al mes
-                            anterior.
-                          </div>
+                        <div className="bg-slate-10 rounded-lg p-3 flex-1 transition-all duration-1000 ease-in-out overflow-y-auto">
+                          <div 
+                            className="text-sm text-slate-700 whitespace-pre-line"
+                            dangerouslySetInnerHTML={{
+                              __html: carouselExamples[currentExample].answer
+                            }}
+                          />
                         </div>
                       </div>
-                      <div className="flex items-center justify-between text-xs text-slate-500">
-                        <span>Respuesta en 0.8s</span>
-                        <span>Datos actualizados</span>
+                      
+                      {/* Fixed bottom section */}
+                      <div className="mt-4 space-y-4">
+                        <div className={`flex items-center justify-between text-xs text-slate-500 transition-all duration-1000 ease-in-out ${
+                          isTransitioning ? 'opacity-0 transform translate-y-2' : 'opacity-100 transform translate-y-0'
+                        }`}>
+                          <span>Respuesta en {carouselExamples[currentExample].responseTime}</span>
+                          <span>Datos actualizados</span>
+                        </div>
+                        
+                        {/* Carousel indicators */}
+                        <div className="flex justify-center space-x-2">
+                          {carouselExamples.map((_, index) => (
+                            <button
+                              key={index}
+                              onClick={() => transitionToExample(index)}
+                              className={`w-2 h-2 rounded-full transition-all duration-500 ease-in-out transform hover:scale-125 ${
+                                index === currentExample ? 'bg-blue-600 scale-110' : 'bg-slate-300 hover:bg-slate-400'
+                              }`}
+                              aria-label={`Go to example ${index + 1}`}
+                            />
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -121,7 +237,7 @@ export default function Component() {
                 <ZapIcon className="h-8 w-8 mx-auto text-blue-600" />
                 <h3 className="text-lg font-bold text-slate-900">Facilidad de Uso</h3>
                 <p className="text-sm text-slate-600">
-                  Tu equipo solo necesita preguntar. Olvídate de menús complejos, filtros confusos y capacitaciones
+                  Tu equipo solo necesita preguntar. Olvidate de menús complejos, filtros confusos y capacitaciones
                   largas.
                 </p>
               </div>
@@ -137,7 +253,7 @@ export default function Component() {
                 <DollarSignIcon className="h-8 w-8 mx-auto text-blue-600" />
                 <h3 className="text-lg font-bold text-slate-900">Reducción de Costos</h3>
                 <p className="text-sm text-slate-600">
-                  Obtén nuevas métricas e informes al instante sin depender de costosos asesores técnicos para cada
+                  Obtené nuevas métricas e informes al instante sin depender de costosos asesores técnicos para cada
                   cambio.
                 </p>
               </div>
@@ -157,12 +273,31 @@ export default function Component() {
                 </p>
               </div>
               <div className="mx-auto w-full max-w-sm space-y-2">
-                <form className="flex gap-2">
-                  <Input type="email" placeholder="Ingresa tu email" className="max-w-lg flex-1" />
-                  <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                    Contactar
+                <form onSubmit={handleSubmit} className="flex gap-2">
+                  <Input 
+                    type="email" 
+                    placeholder="Ingresa tu email" 
+                    className="max-w-lg flex-1" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    disabled={isSubmitting}
+                  />
+                  <Button 
+                    type="submit" 
+                    className="bg-blue-600 hover:bg-blue-700"
+                    disabled={isSubmitting || !email.trim()}
+                  >
+                    {isSubmitting ? "Enviando..." : "Contactar"}
                   </Button>
                 </form>
+                {message && (
+                  <p className={`text-sm ${
+                    messageType === "success" ? "text-green-600" : "text-red-600"
+                  }`}>
+                    {message}
+                  </p>
+                )}
                 <p className="text-xs text-slate-500">Sin spam. Solo una conversación para entender tus necesidades.</p>
               </div>
             </div>
@@ -174,16 +309,17 @@ export default function Component() {
           <p className="text-xs text-slate-500">
             &copy; {new Date().getFullYear()} Brocket.ai. Todos los derechos reservados.
           </p>
-          <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-            <Link href="#" className="text-xs hover:underline underline-offset-4 text-slate-500" prefetch={false}>
-              Términos de Servicio
-            </Link>
-            <Link href="#" className="text-xs hover:underline underline-offset-4 text-slate-500" prefetch={false}>
-              Privacidad
-            </Link>
-          </nav>
+          {/*<nav className="sm:ml-auto flex gap-4 sm:gap-6">*/}
+          {/*  <Link href="#" className="text-xs hover:underline underline-offset-4 text-slate-500" prefetch={false}>*/}
+          {/*    Términos de Servicio*/}
+          {/*  </Link>*/}
+          {/*  <Link href="#" className="text-xs hover:underline underline-offset-4 text-slate-500" prefetch={false}>*/}
+          {/*    Privacidad*/}
+          {/*  </Link>*/}
+          {/*</nav>*/}
         </div>
       </footer>
     </div>
   )
 }
+
