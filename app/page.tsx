@@ -176,7 +176,7 @@ export default function Component() {
                             "{carouselExamples[currentExample].question}"
                           </div>
                         </div>
-                        <div className="bg-slate-50 rounded-lg p-3 flex-1 transition-all duration-1000 ease-in-out overflow-y-auto">
+                        <div className="bg-slate-10 rounded-lg p-3 flex-1 transition-all duration-1000 ease-in-out overflow-y-auto">
                           <div 
                             className="text-sm text-slate-700 whitespace-pre-line"
                             dangerouslySetInnerHTML={{
