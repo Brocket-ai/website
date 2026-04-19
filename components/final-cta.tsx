@@ -1,6 +1,7 @@
 "use client"
 
 import { useBookDemo } from "@/components/book-demo-modal"
+import { Reveal } from "@/components/reveal"
 
 function BrocketLogoDark() {
   return (
@@ -34,22 +35,37 @@ export function FinalCTA() {
     <section
       style={{
         backgroundColor: "#1e1a3a",
-        padding: "100px 24px",
+        padding: "96px 24px",
         width: "100%",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Background mesh (bookend with Hero) */}
+      <div className="finalcta-bg" aria-hidden="true">
+        <div className="finalcta-blob finalcta-blob--top-left" />
+        <div className="finalcta-blob finalcta-blob--bottom-right" />
+        <div className="finalcta-grid-overlay" />
+      </div>
+
       <div
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
           textAlign: "center",
+          position: "relative",
+          zIndex: 1,
         }}
       >
         {/* Logo */}
-        <BrocketLogoDark />
+        <Reveal>
+          <BrocketLogoDark />
+        </Reveal>
 
         {/* Headline */}
-        <h2
+        <Reveal
+          as="h2"
+          delay={100}
           style={{
             fontSize: "clamp(32px, 5vw, 48px)",
             fontWeight: 700,
@@ -59,10 +75,12 @@ export function FinalCTA() {
           }}
         >
           Ready to scale your finance team?
-        </h2>
+        </Reveal>
 
         {/* Subheadline */}
-        <p
+        <Reveal
+          as="p"
+          delay={200}
           style={{
             fontSize: "18px",
             color: "#afa9ec",
@@ -70,33 +88,29 @@ export function FinalCTA() {
           }}
         >
           Real AI for finance teams. Up and running in days.
-        </p>
+        </Reveal>
 
         {/* CTA Button */}
-        <button
-          onClick={openBookDemo}
-          style={{
-            backgroundColor: "#7f77dd",
-            color: "#ffffff",
-            borderRadius: "8px",
-            padding: "14px 32px",
-            fontSize: "15px",
-            fontWeight: 600,
-            border: "none",
-            cursor: "pointer",
-            transition: "background-color 0.2s ease",
-            width: "auto",
-            maxWidth: "100%",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#534ab7"
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#7f77dd"
-          }}
-        >
-          Book a Demo
-        </button>
+        <Reveal delay={300}>
+          <button
+            onClick={openBookDemo}
+            className="animate-pulse-soft final-cta-btn"
+            style={{
+              backgroundColor: "#7f77dd",
+              color: "#ffffff",
+              borderRadius: "8px",
+              padding: "14px 32px",
+              fontSize: "15px",
+              fontWeight: 600,
+              border: "none",
+              cursor: "pointer",
+              width: "auto",
+              maxWidth: "100%",
+            }}
+          >
+            Book a Demo
+          </button>
+        </Reveal>
 
         {/* Footer */}
         <div
@@ -131,8 +145,11 @@ export function FinalCTA() {
       </div>
 
       <style jsx>{`
+        .final-cta-btn:hover {
+          background-color: #534ab7 !important;
+        }
         @media (max-width: 640px) {
-          button {
+          .final-cta-btn {
             width: 100% !important;
           }
         }

@@ -1,70 +1,82 @@
 "use client"
 
+import { ArrowRight } from "lucide-react"
 import { useState } from "react"
+
 import { useBookDemo } from "@/components/book-demo-modal"
+import { Reveal } from "@/components/reveal"
 
 export function Hero() {
   const [isHovered, setIsHovered] = useState(false)
   const { open: openBookDemo } = useBookDemo()
 
   return (
-    <section className="flex min-h-[calc(100vh-88px)] flex-col items-center justify-center px-6 pb-24 md:min-h-[calc(100vh-104px)]">
-      <div className="flex max-w-3xl flex-col items-center text-center">
+    <section className="hero-section">
+      {/* Layered gradient mesh background */}
+      <div aria-hidden="true" className="hero-bg">
+        <div className="hero-blob hero-blob--top-right" />
+        <div className="hero-blob hero-blob--bottom-left" />
+        <div className="hero-blob hero-blob--center" />
+        <div className="hero-grid-overlay" />
+      </div>
+
+      <div className="hero-content">
         {/* Eyebrow pill */}
-        <div
-          className="mb-6 rounded-full px-4 py-2"
-          style={{
-            backgroundColor: "#eeedfe",
-            color: "#534ab7",
-            fontSize: "12px",
-            fontWeight: 600,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-          }}
-        >
+        <Reveal className="hero-eyebrow">
+          <span className="hero-eyebrow-dot" />
           AI operating layer for finance teams
-        </div>
+        </Reveal>
 
         {/* Headline */}
-        <h1
-          className="mb-6 max-w-[700px] text-4xl md:text-[56px] md:leading-[1.1]"
-          style={{
-            color: "#1e1a3a",
-            fontWeight: 700,
-            letterSpacing: "-0.04em",
-          }}
-        >
+        <Reveal as="h1" delay={100} className="hero-headline">
           Finance teams that scale without hiring.
-        </h1>
+        </Reveal>
 
         {/* Subheadline */}
-        <p
-          className="mb-10 max-w-[560px]"
-          style={{
-            color: "#7a768f",
-            fontSize: "18px",
-            lineHeight: 1.65,
-          }}
-        >
+        <Reveal as="p" delay={200} className="hero-subhead">
           Brocket sits on top of your ERP and handles the routine — variance
           analysis, forecasting, reporting — so your team focuses on decisions,
           not data.
-        </p>
+        </Reveal>
 
         {/* CTA Button */}
-        <button
-          onClick={openBookDemo}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className="cursor-pointer rounded-lg px-7 py-3.5 text-white transition-colors"
-          style={{
-            backgroundColor: isHovered ? "#534ab7" : "#7f77dd",
-            fontWeight: 600,
-            fontSize: "15px",
-          }}
-        >
-          Book a Demo
-        </button>
+        <Reveal delay={300}>
+          <button
+            onClick={openBookDemo}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="hero-cta animate-pulse-soft"
+            style={{
+              backgroundColor: isHovered ? "#534ab7" : "#7f77dd",
+            }}
+          >
+            Book a Demo
+            <ArrowRight
+              size={18}
+              strokeWidth={2.5}
+              className="hero-cta-arrow"
+              style={{
+                transform: isHovered ? "translateX(4px)" : "translateX(0)",
+              }}
+            />
+          </button>
+        </Reveal>
+
+        {/* Scroll indicator */}
+        <Reveal delay={500} className="hero-scroll-indicator">
+          <span className="hero-scroll-label">Scroll to explore</span>
+          <div className="hero-scroll-chevron">
+            <svg width="20" height="12" viewBox="0 0 20 12" fill="none" aria-hidden="true">
+              <path
+                d="M2 2L10 10L18 2"
+                stroke="#afa9ec"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
