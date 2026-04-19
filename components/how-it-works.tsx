@@ -28,15 +28,9 @@ export function HowItWorks() {
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setActive(true)
-          obs.disconnect()
-        }
-      },
-      { threshold: 0.4 },
-    )
+    const obs = new IntersectionObserver(([entry]) => setActive(entry.isIntersecting), {
+      threshold: 0.2,
+    })
     obs.observe(el)
     return () => obs.disconnect()
   }, [])
@@ -71,22 +65,23 @@ export function HowItWorks() {
 
         {/* Steps */}
         <div ref={containerRef} className="steps-container">
-          {/* Connector segments (desktop only) */}
+          {/* Segment 1: between circle 1 and circle 2 */}
           <div className="connector-segment connector-segment--first" aria-hidden="true">
             <div
               className="connector-fill"
               style={{
-                width: active ? "100%" : "0%",
-                transition: "width 700ms cubic-bezier(0.5, 0, 0, 1) 350ms",
+                transform: active ? "scaleX(1)" : "scaleX(0)",
+                transition: "transform 700ms cubic-bezier(0.65, 0, 0.35, 1) 250ms",
               }}
             />
           </div>
+          {/* Segment 2: between circle 2 and circle 3 */}
           <div className="connector-segment connector-segment--second" aria-hidden="true">
             <div
               className="connector-fill"
               style={{
-                width: active ? "100%" : "0%",
-                transition: "width 700ms cubic-bezier(0.5, 0, 0, 1) 900ms",
+                transform: active ? "scaleX(1)" : "scaleX(0)",
+                transition: "transform 700ms cubic-bezier(0.65, 0, 0.35, 1) 900ms",
               }}
             />
           </div>
@@ -94,7 +89,7 @@ export function HowItWorks() {
           {steps.map((step, index) => (
             <Reveal
               key={step.number}
-              delay={(index + 1) * 150}
+              delay={index * 120}
               className="step"
               style={{
                 flex: 1,
@@ -136,19 +131,25 @@ export function HowItWorks() {
 
         .connector-segment {
           position: absolute;
-          top: 17px;
-          height: 2px;
-          background-color: #e2e0f0;
+          top: 16.5px;
+          height: 3px;
           border-radius: 999px;
           overflow: hidden;
           z-index: 0;
+          background: linear-gradient(
+            90deg,
+            rgba(127, 119, 221, 0) 0%,
+            rgba(127, 119, 221, 0.14) 12%,
+            rgba(127, 119, 221, 0.14) 88%,
+            rgba(127, 119, 221, 0) 100%
+          );
         }
-        /* First segment spans from center of step 1 to center of step 2 */
+        /* First segment: from right edge of circle 1 to left edge of circle 2 */
         .connector-segment--first {
           left: calc(100% / 6 + 18px);
           right: calc(50% + 18px);
         }
-        /* Second segment spans from center of step 2 to center of step 3 */
+        /* Second segment: from right edge of circle 2 to left edge of circle 3 */
         .connector-segment--second {
           left: calc(50% + 18px);
           right: calc(100% / 6 + 18px);
@@ -158,6 +159,8 @@ export function HowItWorks() {
           height: 100%;
           background: linear-gradient(90deg, #7f77dd 0%, #afa9ec 100%);
           border-radius: 999px;
+          transform-origin: left center;
+          box-shadow: 0 0 10px rgba(127, 119, 221, 0.35);
         }
 
         .step-circle {
@@ -170,7 +173,7 @@ export function HowItWorks() {
           justify-content: center;
           margin: 0 auto 16px;
           position: relative;
-          z-index: 1;
+          z-index: 2;
           transition:
             transform 300ms cubic-bezier(0.5, 0, 0, 1),
             box-shadow 300ms cubic-bezier(0.5, 0, 0, 1);
@@ -194,7 +197,7 @@ export function HowItWorks() {
 
         .step:hover .step-circle {
           transform: scale(1.1);
-          box-shadow: 0 8px 20px rgba(127, 119, 221, 0.35);
+          box-shadow: 0 8px 20px rgba(127, 119, 221, 0.4);
         }
         .step:hover .step-title {
           color: #534ab7;
@@ -219,7 +222,7 @@ export function HowItWorks() {
           }
           .connector-fill {
             transition: none !important;
-            width: 100% !important;
+            transform: scaleX(1) !important;
           }
         }
       `}</style>

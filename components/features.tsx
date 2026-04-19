@@ -1,7 +1,11 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react"
+import { Clock, GraduationCap, Presentation, Zap } from "lucide-react"
+import React, { useEffect, useRef, useState, type ComponentType } from "react"
+
 import { Reveal } from "@/components/reveal"
+
+type IconComponent = ComponentType<{ size?: number; strokeWidth?: number; color?: string }>
 
 type FeatureItem = {
   feature: string
@@ -13,12 +17,14 @@ type FeatureItem = {
 
 type FeatureGroup = {
   group: string
+  icon: IconComponent
   items: FeatureItem[]
 }
 
 const featuresData: FeatureGroup[] = [
   {
     group: "BUSINESS INSIGHTS",
+    icon: Zap,
     items: [
       {
         feature: "Real time data access",
@@ -38,6 +44,7 @@ const featuresData: FeatureGroup[] = [
   },
   {
     group: "SHORTEN FINANCIAL CLOSE",
+    icon: Clock,
     items: [
       {
         feature: "Variance analysis",
@@ -64,6 +71,7 @@ const featuresData: FeatureGroup[] = [
   },
   {
     group: "MONTHLY FINANCIAL REVIEWS",
+    icon: Presentation,
     items: [
       {
         feature: "Report generation",
@@ -76,6 +84,7 @@ const featuresData: FeatureGroup[] = [
   },
   {
     group: "TRAINING",
+    icon: GraduationCap,
     items: [
       {
         feature: "Team onboarding",
@@ -95,15 +104,9 @@ function useInView<T extends Element>(threshold = 0.3): [React.RefObject<T | nul
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true)
-          obs.disconnect()
-        }
-      },
-      { threshold },
-    )
+    const obs = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold,
+    })
     obs.observe(el)
     return () => obs.disconnect()
   }, [threshold])
@@ -122,7 +125,7 @@ function TimeSavedBar({ magnitude, delay = 0 }: { magnitude: number; delay?: num
         height: "3px",
         width: "100%",
         maxWidth: "72px",
-        backgroundColor: "#eeedfe",
+        backgroundColor: "#eceafc",
         borderRadius: "999px",
         overflow: "hidden",
       }}
@@ -157,6 +160,7 @@ function AnimatedCounter({
 
   useEffect(() => {
     if (!inView) return
+    setValue(0)
     const start = performance.now()
     let raf = 0
     const tick = (now: number) => {
@@ -213,12 +217,13 @@ export function Features() {
         {/* Table */}
         <Reveal
           delay={100}
-          className="hover-lift"
+          className="features-table-wrapper hover-lift"
           style={{
             backgroundColor: "#ffffff",
             borderRadius: "12px",
             border: "0.5px solid #e2e0f0",
             overflow: "hidden",
+            boxShadow: "0 4px 16px rgba(30, 26, 58, 0.04)",
           }}
         >
           <table
@@ -228,174 +233,121 @@ export function Features() {
             }}
           >
             <thead>
-              <tr style={{ backgroundColor: "#f5f4fb", borderBottom: "0.5px solid #e2e0f0" }}>
-                <th
-                  style={{
-                    width: "22%",
-                    textAlign: "left",
-                    fontSize: "11px",
-                    fontWeight: 600,
-                    letterSpacing: "0.08em",
-                    color: "#afa9ec",
-                    padding: "12px 20px",
-                  }}
-                >
+              <tr style={{ borderBottom: "1px solid #e2e0f0" }}>
+                <th className="features-th" style={{ width: "22%", textAlign: "left" }}>
                   Feature
                 </th>
-                <th
-                  className="hide-mobile"
-                  style={{
-                    width: "38%",
-                    textAlign: "left",
-                    fontSize: "11px",
-                    fontWeight: 600,
-                    letterSpacing: "0.08em",
-                    color: "#afa9ec",
-                    padding: "12px 20px",
-                  }}
-                >
+                <th className="features-th hide-mobile" style={{ width: "38%", textAlign: "left" }}>
                   What it does
                 </th>
-                <th
-                  style={{
-                    width: "20%",
-                    textAlign: "right",
-                    fontSize: "11px",
-                    fontWeight: 600,
-                    letterSpacing: "0.08em",
-                    color: "#afa9ec",
-                    padding: "12px 20px",
-                  }}
-                >
+                <th className="features-th" style={{ width: "20%", textAlign: "right" }}>
                   Time saved
                 </th>
-                <th
-                  style={{
-                    width: "20%",
-                    textAlign: "right",
-                    fontSize: "11px",
-                    fontWeight: 600,
-                    letterSpacing: "0.08em",
-                    color: "#afa9ec",
-                    padding: "12px 20px",
-                  }}
-                >
+                <th className="features-th" style={{ width: "20%", textAlign: "center" }}>
                   Per
                 </th>
               </tr>
             </thead>
             <tbody>
-              {featuresData.map((group, groupIndex) => (
-                <React.Fragment key={`group-${groupIndex}`}>
-                  {/* Group header */}
-                  <tr
-                    style={{
-                      backgroundColor: "#eeedfe",
-                      borderTop: "0.5px solid #afa9ec",
-                      borderBottom: "0.5px solid #afa9ec",
-                    }}
-                  >
-                    <td
-                      colSpan={4}
-                      style={{
-                        fontSize: "11px",
-                        fontWeight: 700,
-                        color: "#534ab7",
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase",
-                        padding: "8px 20px",
-                      }}
-                    >
-                      {group.group}
-                    </td>
-                  </tr>
-                  {/* Feature rows */}
-                  {group.items.map((item, itemIndex) => (
-                    <tr
-                      key={`item-${groupIndex}-${itemIndex}`}
-                      className="feature-row"
-                      style={{
-                        borderBottom: "0.5px solid #e2e0f0",
-                      }}
-                    >
-                      <td
-                        style={{
-                          padding: "14px 20px",
-                          verticalAlign: "top",
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: "13px",
-                            fontWeight: 600,
-                            color: "#1e1a3a",
-                          }}
-                        >
-                          {item.feature}
+              {featuresData.map((group, groupIndex) => {
+                const GroupIcon = group.icon
+                return (
+                  <React.Fragment key={`group-${groupIndex}`}>
+                    {/* Group header with icon + left accent */}
+                    <tr className="features-group-row">
+                      <td colSpan={4} className="features-group-cell">
+                        <div className="features-group-label">
+                          <GroupIcon size={14} strokeWidth={2.2} />
+                          <span>{group.group}</span>
                         </div>
-                        <div
-                          className="show-mobile"
+                      </td>
+                    </tr>
+                    {/* Feature rows */}
+                    {group.items.map((item, itemIndex) => (
+                      <tr
+                        key={`item-${groupIndex}-${itemIndex}`}
+                        className="feature-row"
+                        style={{ borderBottom: "0.5px solid #e2e0f0" }}
+                      >
+                        <td className="feature-cell" style={{ verticalAlign: "top" }}>
+                          <div
+                            style={{
+                              fontSize: "13px",
+                              fontWeight: 600,
+                              color: "#1e1a3a",
+                            }}
+                          >
+                            {item.feature}
+                          </div>
+                          <div
+                            className="show-mobile feature-description-mobile"
+                            style={{ display: "none" }}
+                          >
+                            {item.description}
+                          </div>
+                        </td>
+                        <td
+                          className="feature-cell hide-mobile"
                           style={{
                             fontSize: "12px",
-                            color: "#7a768f",
-                            lineHeight: 1.5,
-                            marginTop: "4px",
-                            display: "none",
+                            color: "#6b6780",
+                            lineHeight: 1.55,
+                            verticalAlign: "top",
                           }}
                         >
                           {item.description}
-                        </div>
-                      </td>
-                      <td
-                        className="hide-mobile"
-                        style={{
-                          padding: "14px 20px",
-                          fontSize: "12px",
-                          color: "#7a768f",
-                          lineHeight: 1.5,
-                          verticalAlign: "top",
-                        }}
-                      >
-                        {item.description}
-                      </td>
-                      <td
-                        style={{
-                          padding: "14px 20px",
-                          fontSize: "13px",
-                          fontWeight: 600,
-                          color: "#534ab7",
-                          textAlign: "right",
-                          verticalAlign: "top",
-                        }}
-                      >
-                        <div>{item.timeSaved}</div>
-                        <TimeSavedBar magnitude={item.magnitude} delay={itemIndex * 80} />
-                      </td>
-                      <td
-                        style={{
-                          padding: "14px 20px",
-                          fontSize: "11px",
-                          color: "#afa9ec",
-                          textAlign: "right",
-                          verticalAlign: "top",
-                        }}
-                      >
-                        {item.per}
-                      </td>
-                    </tr>
-                  ))}
-                </React.Fragment>
-              ))}
+                        </td>
+                        <td
+                          className="feature-cell"
+                          style={{
+                            fontSize: "14px",
+                            fontWeight: 700,
+                            color: "#534ab7",
+                            textAlign: "right",
+                            verticalAlign: "top",
+                          }}
+                        >
+                          <div>{item.timeSaved}</div>
+                          <TimeSavedBar magnitude={item.magnitude} delay={itemIndex * 80} />
+                        </td>
+                        <td
+                          className="feature-cell"
+                          style={{
+                            fontSize: "11px",
+                            color: "#9a96ae",
+                            textAlign: "center",
+                            verticalAlign: "top",
+                          }}
+                        >
+                          {item.per}
+                        </td>
+                      </tr>
+                    ))}
+                  </React.Fragment>
+                )
+              })}
             </tbody>
             <tfoot>
-              <tr style={{ backgroundColor: "#1e1a3a" }}>
+              {/* Accent bar above footer */}
+              <tr>
+                <td
+                  colSpan={4}
+                  style={{
+                    padding: 0,
+                    height: "2px",
+                    background: "linear-gradient(90deg, #7f77dd 0%, #afa9ec 100%)",
+                  }}
+                />
+              </tr>
+              <tr style={{ background: "linear-gradient(180deg, #272345 0%, #1e1a3a 100%)" }}>
                 <td
                   colSpan={2}
                   style={{
-                    padding: "14px 20px",
+                    padding: "16px 20px",
                     fontSize: "13px",
                     fontWeight: 700,
                     color: "#ffffff",
+                    letterSpacing: "-0.01em",
                   }}
                 >
                   Total time saved per month
@@ -403,11 +355,12 @@ export function Features() {
                 <td
                   colSpan={2}
                   style={{
-                    padding: "14px 20px",
-                    fontSize: "15px",
+                    padding: "16px 20px",
+                    fontSize: "16px",
                     fontWeight: 700,
-                    color: "#afa9ec",
+                    color: "#ffffff",
                     textAlign: "right",
+                    letterSpacing: "-0.01em",
                   }}
                 >
                   <AnimatedCounter target={10} suffix=" days" />
@@ -419,6 +372,50 @@ export function Features() {
       </div>
 
       <style jsx>{`
+        .features-th {
+          font-size: 10.5px;
+          font-weight: 600;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #8a8697;
+          padding: 14px 20px;
+          background-color: #ffffff;
+        }
+        .features-group-row {
+          background-color: #f8f7fd;
+        }
+        .features-group-cell {
+          padding: 10px 20px 10px 17px;
+          box-shadow: inset 3px 0 0 #7f77dd;
+          border-top: 0.5px solid #e2e0f0;
+          border-bottom: 0.5px solid #e2e0f0;
+        }
+        .features-group-label {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          color: #534ab7;
+          font-size: 10.5px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .feature-cell {
+          padding: 15px 20px;
+        }
+        .feature-description-mobile {
+          font-size: 12px;
+          color: #6b6780;
+          line-height: 1.5;
+          margin-top: 4px;
+        }
+        .feature-row {
+          transition: background-color 200ms ease, box-shadow 200ms ease;
+        }
+        .feature-row:hover {
+          background-color: #faf9ff;
+          box-shadow: inset 2px 0 0 #7f77dd;
+        }
         @media (max-width: 640px) {
           .hide-mobile {
             display: none !important;
@@ -427,11 +424,10 @@ export function Features() {
             display: block !important;
           }
         }
-        .feature-row {
-          transition: background-color 200ms ease;
-        }
-        .feature-row:hover {
-          background-color: #faf9fe;
+        @media (prefers-reduced-motion: reduce) {
+          .feature-row {
+            transition: none !important;
+          }
         }
       `}</style>
     </section>
