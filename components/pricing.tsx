@@ -11,7 +11,7 @@ export function Pricing() {
       id="pricing"
       style={{
         backgroundColor: "#1e1a3a",
-        padding: "80px 24px",
+        padding: "96px 24px",
         scrollMarginTop: "88px",
       }}
     >
@@ -72,7 +72,9 @@ export function Pricing() {
             </span>
             <div style={{ marginBottom: "16px" }}>
               <span
+                className="pricing-price"
                 style={{
+                  display: "inline-block",
                   fontSize: "32px",
                   fontWeight: 700,
                   color: "#ffffff",
@@ -156,20 +158,11 @@ export function Pricing() {
               display: "flex",
               flexDirection: "column",
               boxShadow: "0 12px 35px rgba(127, 119, 221, 0.4)",
+              position: "relative",
             }}
           >
-            <span
-              style={{
-                backgroundColor: "#ffffff",
-                color: "#534ab7",
-                borderRadius: "20px",
-                padding: "3px 10px",
-                fontSize: "10px",
-                fontWeight: 600,
-                alignSelf: "flex-start",
-                marginBottom: "12px",
-              }}
-            >
+            {/* Most popular ribbon */}
+            <span className="pricing-ribbon" aria-label="Most popular">
               Most popular
             </span>
             <span
@@ -185,7 +178,9 @@ export function Pricing() {
             </span>
             <div style={{ marginBottom: "16px" }}>
               <span
+                className="pricing-price"
                 style={{
+                  display: "inline-block",
                   fontSize: "32px",
                   fontWeight: 700,
                   color: "#ffffff",
@@ -283,7 +278,9 @@ export function Pricing() {
             </span>
             <div style={{ marginBottom: "16px", paddingTop: "4px" }}>
               <span
+                className="pricing-price"
                 style={{
+                  display: "inline-block",
                   fontSize: "22px",
                   fontWeight: 700,
                   color: "#ffffff",
@@ -386,6 +383,38 @@ export function Pricing() {
           transform: scale(1.05) translateY(-8px);
           box-shadow: 0 18px 45px rgba(127, 119, 221, 0.55);
         }
+        .pricing-price {
+          transition: transform 250ms cubic-bezier(0.5, 0, 0, 1);
+          transform-origin: left center;
+        }
+        .pricing-card:hover .pricing-price {
+          transform: scale(1.03);
+        }
+        .pricing-ribbon {
+          position: absolute;
+          top: 14px;
+          right: -6px;
+          background-color: #ffffff;
+          color: #534ab7;
+          padding: 5px 14px 5px 12px;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          border-radius: 4px 0 0 4px;
+          box-shadow: 0 4px 14px rgba(30, 26, 58, 0.25);
+          transform: rotate(-3deg);
+          transform-origin: right center;
+          z-index: 2;
+        }
+        .pricing-ribbon::after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          right: 0;
+          border-left: 6px solid transparent;
+          border-top: 5px solid rgba(30, 26, 58, 0.35);
+        }
         .pricing-cta {
           transition:
             transform 200ms cubic-bezier(0.5, 0, 0, 1),
@@ -412,11 +441,13 @@ export function Pricing() {
         }
         @media (prefers-reduced-motion: reduce) {
           .pricing-card,
-          .pricing-cta {
+          .pricing-cta,
+          .pricing-price {
             transition: none !important;
           }
           .pricing-card:hover,
-          .pricing-cta:hover {
+          .pricing-cta:hover,
+          .pricing-card:hover .pricing-price {
             transform: none !important;
           }
           .pricing-card--featured {

@@ -35,15 +35,26 @@ export function FinalCTA() {
     <section
       style={{
         backgroundColor: "#1e1a3a",
-        padding: "100px 24px",
+        padding: "96px 24px",
         width: "100%",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Background mesh (bookend with Hero) */}
+      <div className="finalcta-bg" aria-hidden="true">
+        <div className="finalcta-blob finalcta-blob--top-left" />
+        <div className="finalcta-blob finalcta-blob--bottom-right" />
+        <div className="finalcta-grid-overlay" />
+      </div>
+
       <div
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
           textAlign: "center",
+          position: "relative",
+          zIndex: 1,
         }}
       >
         {/* Logo */}

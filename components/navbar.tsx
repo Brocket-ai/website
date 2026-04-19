@@ -121,7 +121,7 @@ export function Navbar() {
                 backgroundColor: isCtaHovered ? "#534ab7" : "#7f77dd",
                 fontWeight: 600,
                 fontSize: "14px",
-                transform: isCtaHovered ? "translateY(-1px) scale(1.03)" : "none",
+                transform: isCtaHovered ? "translateY(-1px) scale(1.03)" : "translateY(0) scale(1)",
                 boxShadow: isCtaHovered ? "0 8px 25px rgba(127, 119, 221, 0.35)" : "none",
               }}
             >

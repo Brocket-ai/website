@@ -1,9 +1,22 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Reveal } from "@/components/reveal"
 
-const featuresData = [
+type FeatureItem = {
+  feature: string
+  description: string
+  timeSaved: string
+  per: string
+  magnitude: number
+}
+
+type FeatureGroup = {
+  group: string
+  items: FeatureItem[]
+}
+
+const featuresData: FeatureGroup[] = [
   {
     group: "BUSINESS INSIGHTS",
     items: [
@@ -12,12 +25,14 @@ const featuresData = [
         description: "Any question about P&L, balance sheet, or transactions answered in seconds.",
         timeSaved: "4–6 hrs",
         per: "week",
+        magnitude: 0.35,
       },
       {
         feature: "Collaborative forecasting",
         description: "Reaches every manager automatically and consolidates responses in real time.",
         timeSaved: "5–7 days",
         per: "→ 24 hrs",
+        magnitude: 0.85,
       },
     ],
   },
@@ -29,18 +44,21 @@ const featuresData = [
         description: "Automatically identifies drivers of deviations from budget or prior periods.",
         timeSaved: "2–3 days",
         per: "month",
+        magnitude: 0.55,
       },
       {
         feature: "Variance intelligence",
         description: "Contacts cost center owners, attaches the invoice, consolidates explanations.",
         timeSaved: "3–4 hrs",
         per: "variance",
+        magnitude: 0.3,
       },
       {
         feature: "Anomaly detection",
         description: "Catches errors and unreconciled accounts before the close.",
         timeSaved: "1–2 days",
         per: "month",
+        magnitude: 0.45,
       },
     ],
   },
@@ -52,6 +70,7 @@ const featuresData = [
         description: "Turns variance data into polished memos and board-ready narratives automatically.",
         timeSaved: "4–8 hrs",
         per: "report",
+        magnitude: 0.4,
       },
     ],
   },
@@ -63,10 +82,101 @@ const featuresData = [
         description: "New analysts onboard in days. Brocket carries the institutional knowledge.",
         timeSaved: "2–3 months",
         per: "→ days",
+        magnitude: 1,
       },
     ],
   },
 ]
+
+function useInView<T extends Element>(threshold = 0.3): [React.RefObject<T | null>, boolean] {
+  const ref = useRef<T | null>(null)
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          obs.disconnect()
+        }
+      },
+      { threshold },
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [threshold])
+
+  return [ref, inView]
+}
+
+function TimeSavedBar({ magnitude, delay = 0 }: { magnitude: number; delay?: number }) {
+  const [ref, inView] = useInView<HTMLDivElement>(0.5)
+  return (
+    <div
+      ref={ref}
+      style={{
+        marginTop: "6px",
+        marginLeft: "auto",
+        height: "3px",
+        width: "100%",
+        maxWidth: "72px",
+        backgroundColor: "#eeedfe",
+        borderRadius: "999px",
+        overflow: "hidden",
+      }}
+      aria-hidden="true"
+    >
+      <div
+        style={{
+          height: "100%",
+          width: inView ? `${Math.round(magnitude * 100)}%` : "0%",
+          background: "linear-gradient(90deg, #afa9ec 0%, #7f77dd 100%)",
+          borderRadius: "999px",
+          transition: `width 900ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`,
+        }}
+      />
+    </div>
+  )
+}
+
+function AnimatedCounter({
+  target,
+  duration = 1300,
+  prefix = "+",
+  suffix = "",
+}: {
+  target: number
+  duration?: number
+  prefix?: string
+  suffix?: string
+}) {
+  const [ref, inView] = useInView<HTMLSpanElement>(0.5)
+  const [value, setValue] = useState(0)
+
+  useEffect(() => {
+    if (!inView) return
+    const start = performance.now()
+    let raf = 0
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1)
+      const eased = 1 - (1 - progress) * (1 - progress)
+      setValue(Math.round(target * eased))
+      if (progress < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [inView, target, duration])
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {value}
+      {suffix}
+    </span>
+  )
+}
 
 export function Features() {
   return (
@@ -75,7 +185,7 @@ export function Features() {
       style={{
         width: "100%",
         backgroundColor: "#f5f4fb",
-        padding: "100px 24px",
+        padding: "96px 24px",
         scrollMarginTop: "88px",
       }}
     >
@@ -258,7 +368,8 @@ export function Features() {
                           verticalAlign: "top",
                         }}
                       >
-                        {item.timeSaved}
+                        <div>{item.timeSaved}</div>
+                        <TimeSavedBar magnitude={item.magnitude} delay={itemIndex * 80} />
                       </td>
                       <td
                         style={{
@@ -299,7 +410,7 @@ export function Features() {
                     textAlign: "right",
                   }}
                 >
-                  +10 days
+                  <AnimatedCounter target={10} suffix=" days" />
                 </td>
               </tr>
             </tfoot>
