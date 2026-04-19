@@ -1,5 +1,7 @@
 "use client"
 
+import { Reveal } from "@/components/reveal"
+
 const trustItems = [
   {
     badge: "Read-only",
@@ -43,7 +45,8 @@ export function Trust() {
         }}
       >
         {/* Headline */}
-        <h2
+        <Reveal
+          as="h2"
           style={{
             fontSize: "48px",
             fontWeight: 700,
@@ -54,10 +57,12 @@ export function Trust() {
           }}
         >
           Your data is safe with us.
-        </h2>
+        </Reveal>
 
         {/* Subheadline */}
-        <p
+        <Reveal
+          as="p"
+          delay={100}
           style={{
             fontSize: "16px",
             color: "#7a768f",
@@ -66,10 +71,12 @@ export function Trust() {
           }}
         >
           Security built for finance teams.
-        </p>
+        </Reveal>
 
         {/* List Card */}
-        <div
+        <Reveal
+          delay={200}
+          className="hover-lift"
           style={{
             maxWidth: "640px",
             margin: "0 auto",
@@ -89,7 +96,7 @@ export function Trust() {
                 gap: "16px",
                 padding: "16px 24px",
                 borderBottom: index < trustItems.length - 1 ? "0.5px solid #e2e0f0" : "none",
-                transition: "background-color 0.15s ease",
+                transition: "background-color 0.2s ease",
               }}
             >
               {/* Badge */}
@@ -135,14 +142,14 @@ export function Trust() {
               </div>
             </div>
           ))}
-        </div>
+        </Reveal>
       </div>
 
       <style jsx>{`
         .trust-row:hover {
           background-color: #faf9fe;
         }
-        
+
         @media (max-width: 480px) {
           .trust-row {
             flex-direction: column !important;

@@ -1,5 +1,7 @@
 "use client"
 
+import { Reveal } from "@/components/reveal"
+
 export function Integrations() {
   const categories = [
     {
@@ -42,7 +44,8 @@ export function Integrations() {
         }}
       >
         {/* Headline */}
-        <h2
+        <Reveal
+          as="h2"
           style={{
             fontSize: "48px",
             fontWeight: 700,
@@ -53,10 +56,12 @@ export function Integrations() {
           }}
         >
           Works with your stack.
-        </h2>
+        </Reveal>
 
         {/* Subheadline */}
-        <p
+        <Reveal
+          as="p"
+          delay={100}
           style={{
             fontSize: "16px",
             color: "#7a768f",
@@ -65,7 +70,7 @@ export function Integrations() {
           }}
         >
           Brocket connects to the tools your finance team already uses.
-        </p>
+        </Reveal>
 
         {/* Category Cards */}
         <div
@@ -76,9 +81,11 @@ export function Integrations() {
           }}
           className="integrations-grid"
         >
-          {categories.map((category) => (
-            <div
+          {categories.map((category, idx) => (
+            <Reveal
               key={category.label}
+              delay={(idx + 1) * 100}
+              className="hover-lift"
               style={{
                 backgroundColor: "#ffffff",
                 border: "0.5px solid #e2e0f0",
@@ -111,10 +118,12 @@ export function Integrations() {
                 {category.items.map((item) => (
                   <div
                     key={item.name}
+                    className="hover-slide"
                     style={{
                       display: "flex",
                       alignItems: "center",
                       gap: "10px",
+                      cursor: "default",
                     }}
                   >
                     {/* Dot */}
@@ -140,7 +149,7 @@ export function Integrations() {
                   </div>
                 ))}
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

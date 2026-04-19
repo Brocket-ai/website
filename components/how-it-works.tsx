@@ -1,5 +1,7 @@
 "use client"
 
+import { Reveal } from "@/components/reveal"
+
 const steps = [
   {
     number: 1,
@@ -33,7 +35,8 @@ export function HowItWorks() {
         }}
       >
         {/* Headline */}
-        <h2
+        <Reveal
+          as="h2"
           style={{
             fontSize: "48px",
             fontWeight: 700,
@@ -44,13 +47,14 @@ export function HowItWorks() {
           }}
         >
           How it works.
-        </h2>
+        </Reveal>
 
         {/* Steps */}
         <div className="steps-container">
           {steps.map((step, index) => (
-            <div
+            <Reveal
               key={step.number}
+              delay={(index + 1) * 100}
               className="step"
               style={{
                 flex: 1,
@@ -76,6 +80,7 @@ export function HowItWorks() {
 
               {/* Circle number */}
               <div
+                className="step-circle"
                 style={{
                   width: "36px",
                   height: "36px",
@@ -87,6 +92,7 @@ export function HowItWorks() {
                   marginBottom: "16px",
                   position: "relative",
                   zIndex: 1,
+                  transition: "transform 300ms cubic-bezier(0.5, 0, 0, 1), box-shadow 300ms cubic-bezier(0.5, 0, 0, 1)",
                 }}
               >
                 <span
@@ -102,11 +108,13 @@ export function HowItWorks() {
 
               {/* Step title */}
               <h3
+                className="step-title"
                 style={{
                   fontSize: "16px",
                   fontWeight: 700,
                   color: "#1e1a3a",
                   marginBottom: "8px",
+                  transition: "color 300ms ease",
                 }}
               >
                 {step.title}
@@ -123,7 +131,7 @@ export function HowItWorks() {
               >
                 {step.body}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -133,6 +141,14 @@ export function HowItWorks() {
           display: flex;
           align-items: flex-start;
           gap: 0;
+        }
+
+        .step:hover .step-circle {
+          transform: scale(1.1);
+          box-shadow: 0 8px 20px rgba(127, 119, 221, 0.35);
+        }
+        .step:hover .step-title {
+          color: #534ab7;
         }
 
         @media (max-width: 768px) {
@@ -148,6 +164,12 @@ export function HowItWorks() {
 
           .connector-line {
             display: none;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .step:hover .step-circle {
+            transform: none;
           }
         }
       `}</style>

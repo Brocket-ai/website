@@ -1,5 +1,7 @@
 "use client"
 
+import { Reveal } from "@/components/reveal"
+
 export function Solution() {
   const dataSources = ["ERP", "Budget data", "Invoices repository", "Business transactional data", "AI Training on Company Business Model"]
   const aiLayerRow1 = ["Real time data access", "Variance analysis", "Anomaly detection", "Forecasting"]
@@ -8,14 +10,17 @@ export function Solution() {
 
   return (
     <section
+      id="product"
       style={{
         backgroundColor: "#f5f4fb",
         padding: "100px 24px",
+        scrollMarginTop: "88px",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Headline */}
-        <h2
+        <Reveal
+          as="h2"
           style={{
             fontSize: "48px",
             fontWeight: 700,
@@ -26,10 +31,12 @@ export function Solution() {
           }}
         >
           There&apos;s a better w<span style={{ color: "#7f77dd", fontWeight: 700 }}>ai</span>.
-        </h2>
+        </Reveal>
 
         {/* Subheadline */}
-        <p
+        <Reveal
+          as="p"
+          delay={100}
           style={{
             fontSize: "18px",
             color: "#7a768f",
@@ -40,12 +47,13 @@ export function Solution() {
           }}
         >
           An AI operating layer that sits on top of your ERP and runs your financial processes — faster, error-free, and hands-free.
-        </p>
+        </Reveal>
 
         {/* Diagram */}
         <div style={{ maxWidth: "760px", margin: "0 auto" }}>
           {/* Block 1 - Data Sources */}
-          <div
+          <Reveal
+            className="hover-lift"
             style={{
               backgroundColor: "#ffffff",
               border: "0.5px solid #e2e0f0",
@@ -76,6 +84,7 @@ export function Solution() {
               {dataSources.map((source) => (
                 <span
                   key={source}
+                  className="hover-scale"
                   style={{
                     backgroundColor: "#f5f4fb",
                     border: "0.5px solid #e2e0f0",
@@ -90,23 +99,26 @@ export function Solution() {
                 </span>
               ))}
             </div>
-          </div>
+          </Reveal>
 
           {/* Arrow 1 */}
-          <div style={{ display: "flex", justifyContent: "center", padding: "8px 0" }}>
+          <Reveal style={{ display: "flex", justifyContent: "center", padding: "8px 0" }}>
             <svg width="24" height="32" viewBox="0 0 24 32" fill="none">
               <line x1="12" y1="0" x2="12" y2="28" stroke="#afa9ec" strokeWidth="1.5" />
               <path d="M7 23 L12 30 L17 23" stroke="#afa9ec" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </div>
+          </Reveal>
 
           {/* Block 2 - Brocket AI Layer */}
-          <div
+          <Reveal
+            delay={100}
+            className="hover-glow"
             style={{
               backgroundColor: "#7f77dd",
               borderRadius: "12px",
               padding: "20px 24px",
               textAlign: "center",
+              boxShadow: "0 8px 25px rgba(127, 119, 221, 0.3)",
             }}
           >
             <div
@@ -139,6 +151,7 @@ export function Solution() {
                 {aiLayerRow1.map((item) => (
                   <span
                     key={item}
+                    className="hover-scale"
                     style={{
                       backgroundColor: "#534ab7",
                       borderRadius: "20px",
@@ -163,6 +176,7 @@ export function Solution() {
                 {aiLayerRow2.map((item) => (
                   <span
                     key={item}
+                    className="hover-scale"
                     style={{
                       backgroundColor: "#534ab7",
                       borderRadius: "20px",
@@ -186,18 +200,20 @@ export function Solution() {
             >
               All interaction via Slack / Teams
             </div>
-          </div>
+          </Reveal>
 
           {/* Arrow 2 */}
-          <div style={{ display: "flex", justifyContent: "center", padding: "8px 0" }}>
+          <Reveal delay={200} style={{ display: "flex", justifyContent: "center", padding: "8px 0" }}>
             <svg width="24" height="32" viewBox="0 0 24 32" fill="none">
               <line x1="12" y1="0" x2="12" y2="28" stroke="#afa9ec" strokeWidth="1.5" />
               <path d="M7 23 L12 30 L17 23" stroke="#afa9ec" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </div>
+          </Reveal>
 
           {/* Block 3 - Outputs */}
-          <div
+          <Reveal
+            delay={300}
+            className="hover-lift"
             style={{
               backgroundColor: "#ffffff",
               border: "0.5px solid #e2e0f0",
@@ -242,7 +258,7 @@ export function Solution() {
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
 

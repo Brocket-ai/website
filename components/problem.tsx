@@ -1,3 +1,5 @@
+import { Reveal } from "@/components/reveal"
+
 export function Problem() {
   const cards = [
     {
@@ -29,7 +31,8 @@ export function Problem() {
     >
       <div className="max-w-6xl mx-auto">
         {/* Headline */}
-        <h2
+        <Reveal
+          as="h2"
           className="text-center mb-12"
           style={{
             fontSize: "48px",
@@ -40,14 +43,15 @@ export function Problem() {
           }}
         >
           Sound familiar?
-        </h2>
+        </Reveal>
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {cards.map((card, index) => (
-            <div
+            <Reveal
               key={index}
-              className="rounded-xl"
+              delay={index * 100}
+              className="rounded-xl hover-lift"
               style={{
                 backgroundColor: "#ffffff",
                 border: "0.5px solid #e2e0f0",
@@ -75,7 +79,7 @@ export function Problem() {
               >
                 {card.body}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

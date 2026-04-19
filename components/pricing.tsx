@@ -1,20 +1,24 @@
 "use client"
 
 import { useBookDemo } from "@/components/book-demo-modal"
+import { Reveal } from "@/components/reveal"
 
 export function Pricing() {
   const { open: openBookDemo } = useBookDemo()
 
   return (
     <section
+      id="pricing"
       style={{
         backgroundColor: "#1e1a3a",
         padding: "80px 24px",
+        scrollMarginTop: "88px",
       }}
     >
       <div style={{ maxWidth: "760px", margin: "0 auto" }}>
         {/* Headline */}
-        <h2
+        <Reveal
+          as="h2"
           style={{
             fontSize: "48px",
             fontWeight: 700,
@@ -25,10 +29,12 @@ export function Pricing() {
           }}
         >
           Simple, transparent pricing.
-        </h2>
+        </Reveal>
 
         {/* Subheadline */}
-        <p
+        <Reveal
+          as="p"
+          delay={100}
           style={{
             fontSize: "16px",
             color: "#afa9ec",
@@ -37,12 +43,13 @@ export function Pricing() {
           }}
         >
           All features included in every plan. Unlimited users.
-        </p>
+        </Reveal>
 
         {/* Pricing Cards */}
         <div className="pricing-grid">
           {/* Card 1 - Starter */}
-          <div
+          <Reveal
+            className="pricing-card pricing-card--dark"
             style={{
               backgroundColor: "#2a2650",
               border: "0.5px solid #3d3870",
@@ -119,6 +126,7 @@ export function Pricing() {
             </div>
             <button
               onClick={openBookDemo}
+              className="pricing-cta"
               style={{
                 backgroundColor: "#7f77dd",
                 color: "#ffffff",
@@ -134,10 +142,12 @@ export function Pricing() {
             >
               Book a Demo
             </button>
-          </div>
+          </Reveal>
 
           {/* Card 2 - Scale-up (Featured) */}
-          <div
+          <Reveal
+            delay={100}
+            className="pricing-card pricing-card--featured"
             style={{
               backgroundColor: "#7f77dd",
               border: "1.5px solid #7f77dd",
@@ -145,6 +155,7 @@ export function Pricing() {
               padding: "28px",
               display: "flex",
               flexDirection: "column",
+              boxShadow: "0 12px 35px rgba(127, 119, 221, 0.4)",
             }}
           >
             <span
@@ -228,6 +239,7 @@ export function Pricing() {
             </div>
             <button
               onClick={openBookDemo}
+              className="pricing-cta"
               style={{
                 backgroundColor: "#ffffff",
                 color: "#534ab7",
@@ -243,10 +255,12 @@ export function Pricing() {
             >
               Book a Demo
             </button>
-          </div>
+          </Reveal>
 
           {/* Card 3 - Enterprise */}
-          <div
+          <Reveal
+            delay={200}
+            className="pricing-card pricing-card--dark"
             style={{
               backgroundColor: "#2a2650",
               border: "0.5px solid #3d3870",
@@ -313,6 +327,7 @@ export function Pricing() {
             </div>
             <button
               onClick={openBookDemo}
+              className="pricing-cta"
               style={{
                 backgroundColor: "#7f77dd",
                 color: "#ffffff",
@@ -328,11 +343,13 @@ export function Pricing() {
             >
               Get an instant quote
             </button>
-          </div>
+          </Reveal>
         </div>
 
         {/* Footnote */}
-        <p
+        <Reveal
+          as="p"
+          delay={300}
           style={{
             fontSize: "11px",
             color: "#6b6880",
@@ -341,7 +358,7 @@ export function Pricing() {
           }}
         >
           Monthly billing · Credit card or bank transfer · Cancel anytime · No minimum commitment
-        </p>
+        </Reveal>
       </div>
 
       <style jsx>{`
@@ -349,10 +366,61 @@ export function Pricing() {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 16px;
+          align-items: center;
+        }
+        .pricing-card {
+          transition:
+            transform 300ms cubic-bezier(0.5, 0, 0, 1),
+            box-shadow 300ms cubic-bezier(0.5, 0, 0, 1),
+            border-color 300ms cubic-bezier(0.5, 0, 0, 1);
+        }
+        .pricing-card--dark:hover {
+          transform: translateY(-6px);
+          border-color: #534ab7 !important;
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        }
+        .pricing-card--featured {
+          transform: scale(1.05);
+        }
+        .pricing-card--featured:hover {
+          transform: scale(1.05) translateY(-8px);
+          box-shadow: 0 18px 45px rgba(127, 119, 221, 0.55);
+        }
+        .pricing-cta {
+          transition:
+            transform 200ms cubic-bezier(0.5, 0, 0, 1),
+            background-color 200ms ease,
+            box-shadow 200ms ease;
+        }
+        .pricing-cta:hover {
+          transform: translateY(-1px) scale(1.02);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        }
+        .pricing-cta:active {
+          transform: scale(0.97);
         }
         @media (max-width: 768px) {
           .pricing-grid {
             grid-template-columns: 1fr;
+          }
+          .pricing-card--featured {
+            transform: none;
+          }
+          .pricing-card--featured:hover {
+            transform: translateY(-6px);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .pricing-card,
+          .pricing-cta {
+            transition: none !important;
+          }
+          .pricing-card:hover,
+          .pricing-cta:hover {
+            transform: none !important;
+          }
+          .pricing-card--featured {
+            transform: scale(1.05);
           }
         }
       `}</style>

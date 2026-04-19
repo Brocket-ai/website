@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import { Reveal } from "@/components/reveal"
 
 const featuresData = [
   {
@@ -70,10 +71,12 @@ const featuresData = [
 export function Features() {
   return (
     <section
+      id="solutions"
       style={{
         width: "100%",
         backgroundColor: "#f5f4fb",
         padding: "100px 24px",
+        scrollMarginTop: "88px",
       }}
     >
       <div
@@ -83,7 +86,8 @@ export function Features() {
         }}
       >
         {/* Headline */}
-        <h2
+        <Reveal
+          as="h2"
           style={{
             fontSize: "48px",
             fontWeight: 700,
@@ -94,10 +98,12 @@ export function Features() {
           }}
         >
           Sc<span style={{ color: "#7f77dd", fontWeight: 700 }}>ai</span>ling up the Finance Team
-        </h2>
+        </Reveal>
 
         {/* Table */}
-        <div
+        <Reveal
+          delay={100}
+          className="hover-lift"
           style={{
             backgroundColor: "#ffffff",
             borderRadius: "12px",
@@ -298,7 +304,7 @@ export function Features() {
               </tr>
             </tfoot>
           </table>
-        </div>
+        </Reveal>
       </div>
 
       <style jsx>{`
@@ -309,6 +315,9 @@ export function Features() {
           .show-mobile {
             display: block !important;
           }
+        }
+        .feature-row {
+          transition: background-color 200ms ease;
         }
         .feature-row:hover {
           background-color: #faf9fe;
