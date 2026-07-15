@@ -9,6 +9,8 @@ const NAV_LINKS = [
   { label: "Pricing", href: "#pricing" },
 ] as const
 
+const APP_URL = "https://app.brocket.xyz"
+
 function BrocketLogo({ variant = "light" }: { variant?: "light" | "dark" }) {
   const isLight = variant === "light"
   return (
@@ -111,7 +113,18 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 md:gap-6">
+            <a
+              href={APP_URL}
+              className="nav-link hidden md:block"
+              style={{
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "#3d3860",
+              }}
+            >
+              Log in
+            </a>
             <button
               onClick={openBookDemo}
               onMouseEnter={() => setIsCtaHovered(true)}
@@ -205,7 +218,19 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="p-4">
+          <div className="flex flex-col gap-2 p-4">
+            <a
+              href={APP_URL}
+              className="w-full rounded-lg px-5 py-3 text-center transition-colors active:scale-95"
+              style={{
+                backgroundColor: "#eeedfe",
+                color: "#534ab7",
+                fontWeight: 600,
+                fontSize: "14px",
+              }}
+            >
+              Log in
+            </a>
             <button
               onClick={handleBookDemo}
               className="w-full cursor-pointer rounded-lg px-5 py-3 text-white transition-all active:scale-95"
