@@ -110,13 +110,10 @@ npx tsc --noEmit  # type-check standalone
 
 ### Flujo de cambios
 
-1. Branch nueva desde `main`: `git checkout -b feature/<nombre>`
-2. Commits (formato convencional: `feat:`, `fix:`, `docs:`)
-3. Push + PR a `main`
-4. Review del preview de Vercel
-5. Merge
-
-**NUNCA** pushear directo a `main` salvo emergencia (tira deploy a producción).
+Este repo está **fuera del pipeline normal** de la plataforma (no hay `develop` ni PRs): se
+commitea y pushea **directo a `main`** (formato convencional: `feat:`, `fix:`, `docs:`), y Vercel
+deploya a producción automáticamente. Para un cambio grande que amerite revisarse antes, usar una
+feature branch y el preview automático de Vercel.
 
 ## Notas
 
