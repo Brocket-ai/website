@@ -42,7 +42,7 @@ export function Hero() {
         {/* CTA Button */}
         <Reveal delay={300}>
           <button
-            onClick={openBookDemo}
+            onClick={() => openBookDemo("hero")}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="hero-cta animate-pulse-soft"

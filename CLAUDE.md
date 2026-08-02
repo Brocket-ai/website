@@ -27,7 +27,7 @@ website/
 │   ├── page.tsx         → Landing principal (orquesta todas las sections)
 │   ├── layout.tsx       → Root layout + Inter font + Vercel Analytics
 │   ├── globals.css      → Design tokens + section styles (hero, problem, finalcta)
-│   └── api/contact/     → Endpoint de Book-a-Demo (Resend)
+│   └── api/contact/     → Endpoint de Book-a-Demo (Amazon SES → leads@brocket.xyz)
 ├── components/
 │   ├── ui/              → shadcn/ui primitives
 │   ├── navbar.tsx       → Sticky nav con backdrop-blur + mobile drawer
@@ -102,6 +102,21 @@ npm run build     # next build (valida TS + genera static)
 npm run lint      # eslint (puede no estar instalado)
 npx tsc --noEmit  # type-check standalone
 ```
+
+## Formulario de contacto (`app/api/contact/`)
+
+Manda por **Amazon SES** (misma infra de mail que la plataforma; nada de terceros): notificación
+interna a `leads@brocket.xyz` (grupo de Workspace) con `Reply-To` al lead + auto-confirmación al
+lead en inglés. El modal pasa `source` (qué CTA lo abrió: hero, navbar, pricing-<plan>, final-cta).
+Anti-spam: honeypot (campo `website`) + rate limit por IP best-effort. Validación con `zod`.
+
+Env vars (dashboard de Vercel, no hay `.env` en el repo): `SES_ACCESS_KEY_ID` y
+`SES_SECRET_ACCESS_KEY` — access keys del IAM user `brocket-web-contact` (send-only). Se llaman
+`SES_*` porque Vercel reserva los nombres `AWS_*`. Sin ellas el endpoint devuelve 500 y el sitio
+buildea igual.
+
+**Package manager: npm** (lockfile único `package-lock.json`; el `pnpm-lock.yaml` viejo se
+eliminó — con dos lockfiles, Vercel elegía pnpm y podía buildear con deps desactualizadas).
 
 ## Deploy
 

@@ -14,7 +14,7 @@ import { createPortal } from "react-dom"
 type Status = "idle" | "loading" | "success" | "error"
 
 type BookDemoContextValue = {
-  open: () => void
+  open: (source?: string) => void
 }
 
 const BookDemoContext = createContext<BookDemoContextValue | null>(null)
@@ -28,6 +28,8 @@ export function useBookDemo(): BookDemoContextValue {
 export function BookDemoProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
   const [email, setEmail] = useState("")
+  const [source, setSource] = useState<string | undefined>(undefined)
+  const [honeypot, setHoneypot] = useState("")
   const [status, setStatus] = useState<Status>("idle")
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
@@ -35,8 +37,10 @@ export function BookDemoProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => setMounted(true), [])
 
-  const open = useCallback(() => {
+  const open = useCallback((from?: string) => {
+    setSource(typeof from === "string" ? from : undefined)
     setEmail("")
+    setHoneypot("")
     setStatus("idle")
     setErrorMsg(null)
     setIsOpen(true)
@@ -84,7 +88,7 @@ export function BookDemoProvider({ children }: { children: ReactNode }) {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed }),
+        body: JSON.stringify({ email: trimmed, source, website: honeypot }),
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
@@ -233,6 +237,23 @@ export function BookDemoProvider({ children }: { children: ReactNode }) {
             </p>
 
             <form onSubmit={submit} noValidate>
+              {/* Honeypot: invisible para humanos; los bots lo completan y el server descarta */}
+              <input
+                type="text"
+                name="website"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  left: "-9999px",
+                  width: 0,
+                  height: 0,
+                  opacity: 0,
+                }}
+              />
               <label
                 htmlFor="bdm-email"
                 style={{

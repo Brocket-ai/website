@@ -127,7 +127,7 @@ export function Pricing() {
               Unlimited users
             </div>
             <button
-              onClick={openBookDemo}
+              onClick={() => openBookDemo("pricing-starter")}
               className="pricing-cta"
               style={{
                 backgroundColor: "#7f77dd",
@@ -233,7 +233,7 @@ export function Pricing() {
               Unlimited users
             </div>
             <button
-              onClick={openBookDemo}
+              onClick={() => openBookDemo("pricing-scale-up")}
               className="pricing-cta"
               style={{
                 backgroundColor: "#ffffff",
@@ -323,7 +323,7 @@ export function Pricing() {
               Unlimited users
             </div>
             <button
-              onClick={openBookDemo}
+              onClick={() => openBookDemo("pricing-enterprise")}
               className="pricing-cta"
               style={{
                 backgroundColor: "#7f77dd",

@@ -80,7 +80,7 @@ export function Navbar() {
 
   const handleBookDemo = () => {
     setMobileMenuOpen(false)
-    openBookDemo()
+    openBookDemo("navbar-mobile")
   }
 
   return (
@@ -126,7 +126,7 @@ export function Navbar() {
               Log in
             </a>
             <button
-              onClick={openBookDemo}
+              onClick={() => openBookDemo("navbar")}
               onMouseEnter={() => setIsCtaHovered(true)}
               onMouseLeave={() => setIsCtaHovered(false)}
               className="hidden cursor-pointer rounded-lg px-5 py-2.5 text-sm text-white transition-all duration-300 active:scale-95 md:block"

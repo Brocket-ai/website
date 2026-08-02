@@ -93,7 +93,7 @@ export function FinalCTA() {
         {/* CTA Button */}
         <Reveal delay={300}>
           <button
-            onClick={openBookDemo}
+            onClick={() => openBookDemo("final-cta")}
             className="animate-pulse-soft final-cta-btn"
             style={{
               backgroundColor: "#7f77dd",
