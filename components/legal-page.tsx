@@ -14,15 +14,6 @@ function BrocketLogo() {
   )
 }
 
-/** A decision the responsible person still has to make. Production builds refuse pages that contain one. */
-export function Pending({ children }: { children: ReactNode }) {
-  return (
-    <mark style={{ backgroundColor: "#fff1a8", color: "#1e1a3a", padding: "0 4px", borderRadius: "4px" }}>
-      [PENDING: {children}]
-    </mark>
-  )
-}
-
 type LegalPageProps = {
   title: string
   updated: string
