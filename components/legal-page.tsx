@@ -47,7 +47,11 @@ export function LegalPage({ title, updated, children }: LegalPageProps) {
         <p style={{ fontSize: "14px", color: "#7a768f", marginBottom: "40px" }}>Last updated: {updated}</p>
         <article className="legal">{children}</article>
       </main>
-      <Footer />
+      <div style={{ backgroundColor: "#1e1a3a", padding: "0 24px 28px" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <Footer />
+        </div>
+      </div>
       <style>{`
         .legal { font-size: 16px; line-height: 1.65; color: #3d3860; }
         .legal h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; color: #1e1a3a; margin: 40px 0 12px; }

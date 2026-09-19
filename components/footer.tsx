@@ -1,36 +1,37 @@
 const LINKS = [
   { label: "Privacy", href: "/privacy" },
   { label: "Terms", href: "/terms" },
-  { label: "Log in", href: "https://app.brocket.xyz" },
+  { label: "contact@brocket.xyz", href: "mailto:contact@brocket.xyz" },
 ] as const
 
+/** Footer strip for dark backgrounds: rendered inside the final CTA on the home page and under every legal page. */
 export function Footer() {
   return (
-    <footer
+    <div
       style={{
-        backgroundColor: "#1e1a3a",
-        borderTop: "1px solid rgba(175, 169, 236, 0.18)",
-        padding: "28px 24px",
-        width: "100%",
+        borderTop: "0.5px solid #2a2650",
+        paddingTop: "24px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap",
+        gap: "12px",
+        fontSize: "12px",
+        color: "#6b6880",
       }}
     >
-      <div
-        className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row"
-        style={{ fontSize: "13px", color: "#afa9ec" }}
-      >
-        <span>© {new Date().getFullYear()} Brocket · <a href="mailto:contact@brocket.xyz" className="site-footer-link">contact@brocket.xyz</a></span>
-        <nav className="flex items-center gap-6" aria-label="Legal">
-          {LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="site-footer-link">
-              {link.label}
-            </a>
-          ))}
-        </nav>
-      </div>
+      <span>© {new Date().getFullYear()} Brocket. All rights reserved.</span>
+      <nav className="flex items-center gap-5" aria-label="Legal">
+        {LINKS.map((link) => (
+          <a key={link.href} href={link.href} className="site-footer-link">
+            {link.label}
+          </a>
+        ))}
+      </nav>
       <style>{`
         .site-footer-link { color: #afa9ec; text-decoration: none; transition: color 200ms ease; }
         .site-footer-link:hover { color: #ffffff; }
       `}</style>
-    </footer>
+    </div>
   )
 }

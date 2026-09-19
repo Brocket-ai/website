@@ -2,6 +2,7 @@
 
 import { useBookDemo } from "@/components/book-demo-modal"
 import { Reveal } from "@/components/reveal"
+import { Footer } from "@/components/footer"
 
 function BrocketLogoDark() {
   return (
@@ -112,35 +113,8 @@ export function FinalCTA() {
           </button>
         </Reveal>
 
-        {/* Footer */}
-        <div
-          style={{
-            borderTop: "0.5px solid #2a2650",
-            marginTop: "64px",
-            paddingTop: "24px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "12px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "12px",
-              color: "#6b6880",
-            }}
-          >
-            © 2025 Brocket AI LLC. All rights reserved.
-          </span>
-          <span
-            style={{
-              fontSize: "12px",
-              color: "#6b6880",
-            }}
-          >
-            brocket.xyz
-          </span>
+        <div style={{ marginTop: "64px" }}>
+          <Footer />
         </div>
       </div>
 

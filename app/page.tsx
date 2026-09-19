@@ -8,7 +8,6 @@ import { Pricing } from "@/components/pricing"
 import { Integrations } from "@/components/integrations"
 import { Trust } from "@/components/trust"
 import { FinalCTA } from "@/components/final-cta"
-import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
@@ -23,7 +22,6 @@ export default function Home() {
       <Integrations />
       <Trust />
       <FinalCTA />
-      <Footer />
     </div>
   )
 }
