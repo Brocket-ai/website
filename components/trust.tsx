@@ -15,32 +15,32 @@ const trustItems: {
 }[] = [
   {
     badge: "Read-only",
-    title: "Brocket never modifies your data",
-    body: "Three validation layers block any write operation — guaranteed.",
+    title: "Read-only access to your data sources",
+    body: "Three validation layers block any write to your databases. Spreadsheet edits happen only when you ask.",
     icon: Lock,
   },
   {
     badge: "Encrypted",
-    title: "TLS 1.3 in transit · AES-256 at rest",
-    body: "All communications and stored data are fully encrypted via AWS KMS.",
+    title: "TLS in transit · AES-256 at rest",
+    body: "Every connection is encrypted. Databases, files and backups use AWS KMS keys.",
     icon: ShieldCheck,
   },
   {
     badge: "Zero retention",
     title: "Your data never trains AI models",
-    body: "Google Gemini API zero data retention policy applies automatically.",
+    body: "Anthropic and Google process requests with zero data retention. Nothing is used for training.",
     icon: EyeOff,
   },
   {
     badge: "Your control",
     title: "Request full data deletion anytime",
-    body: "Chats, configs, and all associated data — deleted on request.",
+    body: "Chats, sources and all associated data — deleted within 30 days of your request.",
     icon: Trash2,
   },
   {
     badge: "Audit trail",
-    title: "90-day log of every action and query",
-    body: "Full traceability for your team, your auditors, and your board.",
+    title: "30-day log of every query",
+    body: "Every request the analyst runs is traced for 30 days and available to you on request.",
     icon: History,
   },
 ]
