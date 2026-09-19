@@ -1,4 +1,5 @@
 const LINKS = [
+  { label: "Brocket for Sheets", href: "/sheets" },
   { label: "Privacy", href: "/privacy" },
   { label: "Terms", href: "/terms" },
   { label: "contact@brocket.xyz", href: "mailto:contact@brocket.xyz" },
