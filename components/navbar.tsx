@@ -6,7 +6,6 @@ import { useBookDemo } from "@/components/book-demo-modal"
 const NAV_LINKS = [
   { label: "Product", href: "#product" },
   { label: "Solutions", href: "#solutions" },
-  { label: "Pricing", href: "#pricing" },
 ] as const
 
 const APP_URL = "https://app.brocket.xyz"
