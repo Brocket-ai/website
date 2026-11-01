@@ -1,6 +1,8 @@
 # Website
 
-Landing page / sitio de marketing de Brocket.
+Landing page / sitio de marketing de Brocket (`brocket.xyz`), más las páginas legales y la del add-on de Google
+Sheets. Cómo trabaja ingeniería (los modos, git, la revisión) está en `team-product-engineering/CLAUDE.md`; las rutas
+que empiezan con `team-product-engineering/` son desde la raíz de brocket-root.
 
 ## Stack
 
@@ -15,9 +17,9 @@ Landing page / sitio de marketing de Brocket.
 
 **La identidad de marca y el sistema de diseño NO viven acá** — viven en el repo de la plataforma:
 
-📘 `../web-client/BRAND.md`
+`team-product-engineering/repos/web-client/BRAND.md`
 
-Cuando hagas cambios visuales en esta landing (colores, tipografía, spacing, patterns, copy voice), **leé primero ese doc** y mantené consistencia. Si inventás algo nuevo que valga la pena reutilizar, agregalo a `BRAND.md` antes de commitear.
+Cuando hagas cambios visuales en esta landing (colores, tipografía, spacing, patterns, copy voice), **leé primero ese doc** y mantené consistencia. Si inventás algo nuevo que valga la pena reutilizar, agregalo a `BRAND.md` (es otro repo: va en un PR de web-client).
 
 ## Estructura
 
@@ -27,7 +29,9 @@ website/
 │   ├── page.tsx         → Landing principal (orquesta todas las sections)
 │   ├── layout.tsx       → Root layout + Inter font + Vercel Analytics
 │   ├── globals.css      → Design tokens + section styles (hero, problem, finalcta)
-│   └── api/contact/     → Endpoint de Book-a-Demo (Amazon SES → leads@brocket.xyz)
+│   ├── api/contact/     → Endpoint de Book-a-Demo (Amazon SES → leads@brocket.xyz)
+│   ├── privacy/ terms/  → Política de privacidad y términos (con `legal-page.tsx`)
+│   └── sheets/          → Página del add-on de Google Sheets; `draft-testers/` es su página de baja (noindex)
 ├── components/
 │   ├── ui/              → shadcn/ui primitives
 │   ├── navbar.tsx       → Sticky nav con backdrop-blur + mobile drawer
@@ -36,16 +40,20 @@ website/
 │   ├── solution.tsx     → Diagrama de flujo (data sources → AI → outputs)
 │   ├── features.tsx     → Tabla "Scaling up" con magnitude bars + counter
 │   ├── how-it-works.tsx → 3 steps con connector line animado
-│   ├── pricing.tsx      → 3 cards (starter/scale-up/enterprise) con ribbon
 │   ├── integrations.tsx → 3 categorías con íconos de marca
 │   ├── trust.tsx        → 5 items de seguridad con íconos
 │   ├── final-cta.tsx    → Bookend con blobs + CTA
+│   ├── footer.tsx       → Links a Sheets, legales y contacto (en final-cta y en las páginas legales y de Sheets)
+│   ├── legal-page.tsx · sheets-nav.tsx → Marco de las páginas legales y barra de las de Sheets
 │   ├── reveal.tsx       → Scroll-reveal reutilizable (IntersectionObserver)
 │   └── book-demo-modal.tsx → Modal de contacto
 ├── hooks/
 ├── lib/
-└── styles/
+└── styles/              → `globals.css` viejo de shadcn: no se importa (el que vale es `app/globals.css`)
 ```
+
+`/sheets` es la home que Google verificó para la marca del add-on y `/sheets/draft-testers` es la URL de baja que
+exige la ficha del Marketplace: no se sacan ni se mueven (`team-product-engineering/repos/ops/docs/google-sheets-addon.md`).
 
 ## Componentes clave
 
@@ -70,7 +78,7 @@ Context que expone `useBookDemo()` en todo el arbol. Modal controlado globalment
 
 ```tsx
 const { open: openBookDemo } = useBookDemo()
-<button onClick={openBookDemo}>Book a Demo</button>
+<button onClick={() => openBookDemo("hero")}>Book a Demo</button>
 ```
 
 ## Patrones establecidos
@@ -98,16 +106,16 @@ Todos de **lucide-react**. Nunca SVG inline salvo el logo y casos muy específic
 
 ```bash
 npm run dev       # http://localhost:3000
-npm run build     # next build (valida TS + genera static)
-npm run lint      # eslint (puede no estar instalado)
-npx tsc --noEmit  # type-check standalone
+npm run build     # next build (NO frena por errores de TS: ignoreBuildErrors en next.config.mjs)
+npx tsc --noEmit  # el type-check de verdad: correrlo antes del PR
+# npm run lint no anda: eslint no está en las dependencias ni configurado
 ```
 
 ## Formulario de contacto (`app/api/contact/`)
 
 Manda por **Amazon SES** (misma infra de mail que la plataforma; nada de terceros): notificación
 interna a `leads@brocket.xyz` (grupo de Workspace) con `Reply-To` al lead + auto-confirmación al
-lead en inglés. El modal pasa `source` (qué CTA lo abrió: hero, navbar, pricing-<plan>, final-cta).
+lead en inglés. El modal pasa `source` (qué CTA lo abrió: hero, navbar, navbar-mobile, final-cta).
 Anti-spam: honeypot (campo `website`) + rate limit por IP best-effort. Validación con `zod`.
 
 Env vars (dashboard de Vercel, no hay `.env` en el repo): `SES_ACCESS_KEY_ID` y
@@ -122,16 +130,6 @@ eliminó — con dos lockfiles, Vercel elegía pnpm y podía buildear con deps d
 
 - **Branch `main`** → deploy a producción (`brocket.xyz`)
 - **Feature branches** → preview deploy automático con URL única (aparece en el PR como comentario de Vercel)
+- **Git y PRs:** `team-product-engineering/rules/git.md` (acá no hay `develop`: el PR va a `main`).
 
-### Flujo de cambios
-
-Este repo está **fuera del pipeline normal** de la plataforma (no hay `develop` ni PRs): se
-commitea y pushea **directo a `main`** (formato convencional: `feat:`, `fix:`, `docs:`), y Vercel
-deploya a producción automáticamente. Para un cambio grande que amerite revisarse antes, usar una
-feature branch y el preview automático de Vercel.
-
-## Notas
-
-- Este repo es un **repo separado** (no parte del monorepo del producto).
-- La plataforma principal vive en `../web-client/`.
-- Mensajes de commit: NO agregar Co-Authored-By de Claude.
+La plataforma principal vive en `team-product-engineering/repos/web-client/`.
