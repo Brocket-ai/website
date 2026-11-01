@@ -11,7 +11,7 @@ que empiezan con `team-product-engineering/` son desde la raíz de brocket-root.
 - **Styling**: TailwindCSS v4 + CSS modules (`styled-jsx`) + CSS puro en `globals.css`
 - **Components**: shadcn/ui (componentes base en `components/ui/`)
 - **Animations**: CSS puro + IntersectionObserver (sin Framer Motion)
-- **Deploy**: Vercel (preview automático por PR, prod por push a `main`)
+- **Deploy**: Vercel (preview automático por PR, prod al mergear a `main`)
 
 ## Source of truth visual
 
@@ -52,8 +52,9 @@ website/
 └── styles/              → `globals.css` viejo de shadcn: no se importa (el que vale es `app/globals.css`)
 ```
 
-`/sheets` es la home que Google verificó para la marca del add-on y `/sheets/draft-testers` es la URL de baja que
-exige la ficha del Marketplace: no se sacan ni se mueven (`team-product-engineering/repos/ops/docs/google-sheets-addon.md`).
+No se sacan ni se mueven: `/sheets` es la home que Google verificó para la marca del add-on
+(`team-product-engineering/repos/ops/docs/google-sheets-addon.md`) y `/sheets/draft-testers` es la "Draft Tester
+Opt-Out URL" de la ficha del Marketplace (commit d4c318e).
 
 ## Componentes clave
 
